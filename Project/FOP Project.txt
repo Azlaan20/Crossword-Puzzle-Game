@@ -1,0 +1,155 @@
+//C++ program to check if the word
+//exists in the grid or not
+#include<iostream>
+using namespace std;
+#define r 10
+#define c 10
+
+//Function to check if a word exists in a grid starting from the first match in the grid 
+//level : index till which pattern is matched 
+//x, y : current position in a 2D array
+
+bool findmatch(char mat[r][c], string pat, int x, int y, int nrow, int ncol, int level)
+{
+	int l = pat.length();
+
+	//Pattern matched
+	if (level == 1)
+	{
+		return true;
+	}
+
+	//Out of Boundary
+	if (x < 0 || y< 0 || x >= nrow || y >= ncol)
+	{
+		return false;
+	}
+
+	//If grid matches with a letter while recursion
+	if (mat[x][y] == pat[level])
+	{
+		//Marking this cell as visited
+		char temp = mat[x][y];
+		mat[x][y] = '#';
+
+		//Finding subpattern in 4 directions
+
+		bool res = findmatch(mat, pat, x - 1, y, nrow, ncol, level + 1) | findmatch(mat, pat, x + 1, y, nrow, ncol, level + 1) | findmatch(mat, pat, x, y - 1, nrow, ncol, level + 1) | findmatch(mat, pat, x, y + 1, nrow, ncol, level + 1);
+
+		//Making this cell as unvisited again
+		mat[x][y] = temp;
+		return res;
+	}
+
+	else
+	{
+		//Not matching then false
+		return false;
+	}
+}
+
+//Function to check if the word exists in the grid or not
+bool checkMatch(char mat[r][c], string pat, int nrow, int ncol)
+{
+	int l = pat.length();
+
+	//if total characters in matrix is less than pattern length
+	if (l > nrow * ncol)
+	{
+		return false;
+	}
+
+	//Traverse the grid
+	for (int i = 0; i < nrow; i++)
+	{
+		for (int j = 0; j < ncol; j++)
+		{
+			//If first letter matches, then recur and check
+			if (mat[i][j] == pat[0])
+			{
+				if (findmatch(mat, pat, i, j, nrow, ncol, 0))
+					return true;
+			}
+		}
+	}
+
+	return false;
+}
+
+//Driver code
+int main()
+{
+	bool replay = false;
+	char choice;
+	do
+	{
+		system("cls");
+		cout << "       ===========================================================" << endl << "       > PROJECT      : 2D PUZZLE" << endl << "       > DESIGNED BY  : AZLAAN RANJHA, BILAL YONUS, ABDULLAH AZHAR" << endl << "       ===========================================================" << endl << endl;
+
+		char grid[r][c] = { "AFMBNDLOD", "CFJKWITCI", "DFCOLLEGE", "GKMRFDIBO", "FCFLJIWQC", "FIANCUOLF", "QROTRBCMI", "ILIEWQTNX", "SLAFJLIKE" };
+		string word = " ";
+
+		cout << "\n";
+
+		cout << "               |     |     |     |     |     |     |     |     " << endl;
+		cout << "            " << 'A' << "  |  " << 'F' << "  |  " << 'M' << "  |  " << 'B' << "  |  " << 'N' << "  |  " << 'D' << "  |  " << 'L' << "  |  " << 'O' << "  |  " << 'D' << endl;
+		cout << "          _____|_____|_____|_____|_____|_____|_____|_____|_____" << endl;
+		cout << "               |     |     |     |     |     |     |     |     " << endl;
+		cout << "            " << 'C' << "  |  " << 'F' << "  |  " << 'J' << "  |  " << 'K' << "  |  " << 'W' << "  |  " << 'I' << "  |  " << 'T' << "  |  " << 'C' << "  |  " << 'I' << endl;
+		cout << "          _____|_____|_____|_____|_____|_____|_____|_____|_____" << endl;
+		cout << "               |     |     |     |     |     |     |     |     " << endl;
+		cout << "            " << 'D' << "  |  " << 'F' << "  |  " << 'C' << "  |  " << 'O' << "  |  " << 'L' << "  |  " << 'L' << "  |  " << 'E' << "  |  " << 'G' << "  |  " << 'E' << endl;
+		cout << "          _____|_____|_____|_____|_____|_____|_____|_____|_____" << endl;
+		cout << "               |     |     |     |     |     |     |     |     " << endl;
+		cout << "            " << 'G' << "  |  " << 'K' << "  |  " << 'M' << "  |  " << 'R' << "  |  " << 'F' << "  |  " << 'D' << "  |  " << 'I' << "  |  " << 'B' << "  |  " << 'O' << endl;
+		cout << "          _____|_____|_____|_____|_____|_____|_____|_____|_____" << endl;
+		cout << "               |     |     |     |     |     |     |     |     " << endl;
+		cout << "            " << 'F' << "  |  " << 'C' << "  |  " << 'F' << "  |  " << 'L' << "  |  " << 'J' << "  |  " << 'I' << "  |  " << 'W' << "  |  " << 'Q' << "  |  " << 'C' << endl;
+		cout << "          _____|_____|_____|_____|_____|_____|_____|_____|_____" << endl;
+		cout << "               |     |     |     |     |     |     |     |     " << endl;
+		cout << "            " << 'F' << "  |  " << 'I' << "  |  " << 'A' << "  |  " << 'N' << "  |  " << 'C' << "  |  " << 'U' << "  |  " << 'O' << "  |  " << 'L' << "  |  " << 'F' << endl;
+		cout << "          _____|_____|_____|_____|_____|_____|_____|_____|_____" << endl;
+		cout << "               |     |     |     |     |     |     |     |     " << endl;
+		cout << "            " << 'Q' << "  |  " << 'R' << "  |  " << 'O' << "  |  " << 'T' << "  |  " << 'R' << "  |  " << 'B' << "  |  " << 'C' << "  |  " << 'M' << "  |  " << 'I' << endl;
+		cout << "          _____|_____|_____|_____|_____|_____|_____|_____|_____" << endl;
+		cout << "               |     |     |     |     |     |     |     |     " << endl;
+		cout << "            " << 'I' << "  |  " << 'L' << "  |  " << 'I' << "  |  " << 'E' << "  |  " << 'W' << "  |  " << 'Q' << "  |  " << 'T' << "  |  " << 'N' << "  |  " << 'X' << endl;
+		cout << "          _____|_____|_____|_____|_____|_____|_____|_____|_____" << endl;
+		cout << "               |     |     |     |     |     |     |     |     " << endl;
+		cout << "            " << 'S' << "  |  " << 'L' << "  |  " << 'A' << "  |  " << 'F' << "  |  " << 'J' << "  |  " << 'L' << "  |  " << 'I' << "  |  " << 'K' << "  |  " << 'E' << endl;
+		cout << "               |     |     |     |     |     |     |     |     " << endl;
+
+		cout << "\n\n          * Type a word : ";
+		cin >> word;
+
+		if (checkMatch(grid, word, r, c))
+		{
+			cout << "          > " << word << " exists in the grid" << endl;
+		}
+
+		else
+		{
+			cout << "          > " << word << " does not exist in the grid" << endl;
+		}
+
+		cout << endl;
+
+		cout << "          Play again?" << " [Y / N] " << endl;
+		cout << "          Your choice : ";
+		cin >> choice;
+
+		if ((choice == 'Y') || (choice == 'y'))
+		{
+			replay = true;
+		}
+
+		else
+		{
+			replay = false;
+		}
+
+
+	} while (replay == true);
+
+	return 0;
+}
